@@ -20,13 +20,22 @@ for entity in feed.entity:
             informed = ""
             header = ""
             description = ""
-            for informed in (entity.alert.informed_entity):
-                informed = "Informed: \n"+str(informed)+"\n"
+            
+            for inf in entity.alert.informed_entity:
+                if(inf.HasField('route_id')):
+                    informed += "Route: "+inf.route_id+" "
+
+                if(inf.HasField('stop_id')):
+                    informed = "Stop: "+inf.stop_id+" "
+
             if(len(entity.alert.header_text.translation)>0):
-                header = entity.alert.header_text.translation[0].text+"\n"
+                header = entity.alert.header_text.translation[0].text
+
             if(len(entity.alert.description_text.translation)>0):
-                description = entity.alert.description_text.translation[0].text+"\n"
+                description = entity.alert.description_text.translation[0].text
+
             results[count]=[informed, header, description]
             count+=1
+
 df = pd.DataFrame.from_dict(results, orient="index", columns=["informed", "header", "description"])
 df.to_csv("results.csv")

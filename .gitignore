@@ -1,3 +1,4 @@
 results.csv
 *old
 *.proto
+__pycache__/*
