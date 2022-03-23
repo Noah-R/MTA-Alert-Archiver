@@ -7,7 +7,7 @@ import pandas as pd
 #url = 'https://api-endpoint.mta.info/Dataservice/mtagtfsfeeds/camsys%2Fall-alerts' #all alerts
 url = 'https://api-endpoint.mta.info/Dataservice/mtagtfsfeeds/camsys%2Fsubway-alerts' #subway
 #url = 'https://api-endpoint.mta.info/Dataservice/mtagtfsfeeds/camsys%2Fmnr-alerts' #mnr
-r = requests.get(url, headers={'x-api-key': 'q0l67K75Ja59qvzUcrvJR6wqufloVMew3UlCcRuk'})
+r = requests.get(url, headers={'x-api-key': open("key.txt").read()})
 
 feed=gtfs_realtime_pb2.FeedMessage()
 feed.ParseFromString(r.content)
