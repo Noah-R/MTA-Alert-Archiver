@@ -17,30 +17,34 @@ count=0
 
 for entity in feed.entity:
     if entity.HasField('alert'):
-        if(len(entity.alert.active_period)==0 or not entity.alert.active_period[0].HasField('start') or entity.alert.active_period[0].start<time.time()):#if the time is blank, or the start time is blank, or the start time is in the past
-            start = ""
-            informed = ""
-            header = ""
-            description = ""
-            
-            if(len(entity.alert.active_period)>0 and entity.alert.active_period[0].HasField('start')):
-                start = datetime.datetime.fromtimestamp(entity.alert.active_period[0].start).strftime('%Y-%m-%d %H:%M:%S')
+        for t in entity.alert.active_period:
+            if(t.start<=time.time() and t.end>=time.time()):
+                start = ""
+                end = ""
+                route = []
+                station = []
+                header = ""
+                description = ""
+                
+                start = datetime.datetime.fromtimestamp(t.start).strftime('%Y-%m-%d %H:%M:%S')
+                end = datetime.datetime.fromtimestamp(t.end).strftime('%Y-%m-%d %H:%M:%S')
 
-            for inf in entity.alert.informed_entity:
-                if(inf.HasField('route_id')):
-                    informed += "Route: "+inf.route_id+" "
+                for inf in entity.alert.informed_entity:
+                    if(inf.HasField('route_id')):
+                        route.append(inf.route_id)
+                    if(inf.HasField('stop_id')):
+                        station.append(inf.stop_id)
+                route = str(route)[1:-1]
+                station = str(station)[1:-1]
 
-                if(inf.HasField('stop_id')):
-                    informed = "Stop: "+inf.stop_id+" "
+                if(len(entity.alert.header_text.translation)>0):
+                    header = entity.alert.header_text.translation[0].text
+                if(len(entity.alert.description_text.translation)>0):
+                    description = entity.alert.description_text.translation[0].text
 
-            if(len(entity.alert.header_text.translation)>0):
-                header = entity.alert.header_text.translation[0].text
+                results[count]=[start, end, route, station, header, description]
+                count+=1
+                break
 
-            if(len(entity.alert.description_text.translation)>0):
-                description = entity.alert.description_text.translation[0].text
-
-            results[count]=[start, informed, header, description]
-            count+=1
-
-df = pd.DataFrame.from_dict(results, orient="index", columns=["start", "informed", "header", "description"])
+df = pd.DataFrame.from_dict(results, orient="index", columns=["start_time", "end_time", "route", "station", "header", "description"])
 df.to_csv("results.csv")
