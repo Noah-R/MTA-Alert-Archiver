@@ -1,5 +1,5 @@
 key.txt
+dbpw.txt
 results.csv
-*old
-*.proto
-__pycache__/*
+ignore/
+__pycache__/
