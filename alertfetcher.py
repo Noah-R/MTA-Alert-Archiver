@@ -48,4 +48,4 @@ def fetch(url, writecsv=False):
         df.to_csv("results.csv")
     return df
 
-fetch('https://api-endpoint.mta.info/Dataservice/mtagtfsfeeds/camsys%2Fsubway-alerts', writecsv=True)
+#fetch('https://api-endpoint.mta.info/Dataservice/mtagtfsfeeds/camsys%2Fsubway-alerts', writecsv=True)
