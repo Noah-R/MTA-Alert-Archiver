@@ -1,14 +1,15 @@
-import requests
 import gtfs_realtime_pb2
 import time
 import datetime
 import csv
+import urllib3
 
 def fetch(url, writecsv=False):
-    r = requests.get(url, headers={'x-api-key': open("key.txt").read()})
+    http = urllib3.PoolManager()
+    r = http.request('GET', url, headers={'x-api-key': open("key.txt").read()})
 
     feed=gtfs_realtime_pb2.FeedMessage()
-    feed.ParseFromString(r.content)
+    feed.ParseFromString(r.data)
 
     results = []
 
