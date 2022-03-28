@@ -1,7 +1,7 @@
 import pymysql
 import alertfetcher
 
-def archive():
+def archive(event, context):
      server = "scratching-post.cc0rktzgr4u0.us-east-1.rds.amazonaws.com"
      database = "mydb"
      username = "admin"
@@ -17,4 +17,4 @@ def archive():
           cur.execute(sql, (item['time'], item['start'], item['end'], item['route'], item['header'], item['description']))
      conn.commit()
 
-#archive()
+#archive({}, {})

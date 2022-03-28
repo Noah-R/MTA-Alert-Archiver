@@ -6,6 +6,7 @@ Build instructions:
     install pip modules locally
         pymysql
         requests
+	protobuf
     delete extra files
         .git
         .gitignore
