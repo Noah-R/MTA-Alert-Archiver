@@ -2,7 +2,7 @@ import pymysql
 import alertfetcher
 
 def archive(event, context):
-     server = "scratching-post.cc0rktzgr4u0.us-east-1.rds.amazonaws.com"
+     server = str(open("dbname.txt").read())
      database = "mydb"
      username = "admin"
      password = str(open("dbpw.txt").read())
